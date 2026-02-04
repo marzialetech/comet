@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comet Backup</title>
+  <link rel="icon" href="/assets/starFavicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      width: 100%;
+      background-color: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      color: white;
+      overflow: hidden;
+    }
+
+    .orbit-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      padding: 3rem 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .orbit-path {
+      position: absolute;
+      width: 420px;
+      height: 280px;
+      pointer-events: none;
+    }
+
+    .comet {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px 3px rgba(255,255,255,0.8), 0 0 20px 6px rgba(255,255,255,0.4);
+      animation: orbit 5s linear infinite;
+      offset-path: ellipse(210px 140px at 210px 140px);
+      offset-distance: 0%;
+      offset-rotate: auto;
+    }
+
+    .comet::before {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(to left, rgba(255,255,255,0.8), rgba(255,255,255,0));
+      top: 50%;
+      left: auto;
+      right: 100%;
+      transform: translateY(-50%);
+      border-radius: 2px;
+    }
+
+    @keyframes orbit {
+      0% {
+        offset-distance: 0%;
+      }
+      100% {
+        offset-distance: 100%;
+      }
+    }
+
+    .robot-text {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.8rem;
+      color: #0f0;
+      min-height: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 10px rgba(0,255,0,0.5);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .robot-text.visible {
+      opacity: 1;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 400;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: -0.02em;
+    }
+
+    .version {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    a.download {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 0.75rem 2rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+      transition: border-color 0.2s;
+    }
+
+    a.download:hover {
+      border-color: #666;
+    }
+
+    .tim-btn {
+      background: none;
+      border: 1px solid #222;
+      color: #555;
+      font-family: inherit;
+      font-size: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tim-btn:hover {
+      border-color: #444;
+      color: #888;
+    }
+
+    .tim-btn.playing {
+      border-color: #0f0;
+      color: #0f0;
+      animation: pulse 0.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { opacity: 0.7; }
+      to { opacity: 1; }
+    }
+
+    .meta {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="orbit-container">
+    <div class="orbit-path">
+      <div class="comet"></div>
+    </div>
+    <div class="container">
+      <h1>Comet Backup</h1>
+      <p class="version">v25.5.4 · macOS · 75 MB · v4 · Jan 5</p>
+      <div class="robot-text" id="robotText"></div>
+      <div class="button-row">
+        <a href="/downloads/Comet%20Backup%2025.5.4-signed.pkg" class="download">Download</a>
+        <button class="tim-btn" id="timBtn" onclick="praiseForTim()">
+          All hail Pixamation
+        </button>
+      </div>
+      <p class="meta">Signed & Notarized</p>
+    </div>
+  </div>
+<script>
+  function praiseForTim() {
+    const btn = document.getElementById('timBtn');
+    const robotText = document.getElementById('robotText');
+    const synth = window.speechSynthesis;
+    
+    synth.cancel();
+    
+    const phrases = [
+      { display: "Attention. This is an important broadcast.", speak: "Attention. This is an important broadcast." },
+      { display: "All hail Ditto Platinum.", speak: "All hail Ditto Platinum." },
+      { display: "Powered by Pixamation.com", speak: "Powered by Pix-uh-may-shun dot com." },
+      { display: "The superior backup solution.", speak: "The superior backup solution." },
+    ];
+    
+    btn.classList.add('playing');
+    robotText.classList.add('visible');
+    
+    let index = 0;
+    function speakNext() {
+      if (index < phrases.length) {
+        robotText.textContent = phrases[index].display;
+        
+        const utter = new SpeechSynthesisUtterance(phrases[index].speak);
+        utter.rate = 1.0;
+        utter.pitch = 1.0;
+        
+        const voices = synth.getVoices();
+        const robotVoice = voices.find(v => v.name.includes('Trinoids')) || voices[0];
+        
+        if (robotVoice) utter.voice = robotVoice;
+        
+        utter.onend = () => {
+          index++;
+          setTimeout(speakNext, 200);
+        };
+        synth.speak(utter);
+      } else {
+        btn.classList.remove('playing');
+        robotText.classList.remove('visible');
+        robotText.textContent = '';
+      }
+    }
+    
+    if (synth.getVoices().length === 0) {
+      synth.onvoiceschanged = speakNext;
+    } else {
+      speakNext();
+    }
+  }
+</script>
+</body>
+</html>
